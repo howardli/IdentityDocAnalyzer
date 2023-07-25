@@ -29,4 +29,8 @@ public class AnalyzerResult {
         return isValid;
     }
 
+    public AnalysisInfo getInfo() {
+        return info;
+    }
+
 }

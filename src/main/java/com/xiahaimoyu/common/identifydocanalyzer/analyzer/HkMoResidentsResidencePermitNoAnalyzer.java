@@ -3,17 +3,15 @@ package com.xiahaimoyu.common.identifydocanalyzer.analyzer;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Map;
 
 import com.xiahaimoyu.common.identifydocanalyzer.info.AnalysisInfo;
-import com.xiahaimoyu.common.identifydocanalyzer.info.IdentityCardNoInfo;
-import com.xiahaimoyu.common.identifydocanalyzer.resource.AreaResource;
+import com.xiahaimoyu.common.identifydocanalyzer.info.HkMoResidentsResidencePermitNoInfo;
 
 /**
  * @author howard.li
- * @date 2023/7/25
+ * @date 2023/7/26
  */
-public class IdentityCardNoAnalyzer implements ItemAnalyzer {
+public class HkMoResidentsResidencePermitNoAnalyzer implements ItemAnalyzer {
 
     // 身份证每位的权重系数，共17位
     private static final int[] COEFFICIENT_ARRAY = {7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2};
@@ -25,19 +23,14 @@ public class IdentityCardNoAnalyzer implements ItemAnalyzer {
         if (itemValue == null) {
             throw new IllegalArgumentException("号码为空");
         }
-        if (itemValue.length() != 18 && itemValue.length() != 15) {
+        if (itemValue.length() != 18) {
             throw new IllegalArgumentException("号码长度不对");
         }
-        IdentityCardNoInfo info = new IdentityCardNoInfo();
+        HkMoResidentsResidencePermitNoInfo info = new HkMoResidentsResidencePermitNoInfo();
         fillArea(info, itemValue.substring(0, 6));
-        if (itemValue.length() == 18) {
-            fillDateOfBirth(info, itemValue.substring(6, 14));
-            fillGender(info, itemValue.substring(16, 17));
-            checkDigit(itemValue.substring(0, 17), itemValue.charAt(17));
-        } else {
-            fillDateOfBirth(info, "19" + itemValue.substring(6, 12));
-            fillGender(info, itemValue.substring(14, 15));
-        }
+        fillDateOfBirth(info, itemValue.substring(6, 14));
+        fillGender(info, itemValue.substring(16, 17));
+        checkDigit(itemValue.substring(0, 17), itemValue.charAt(17));
         return info;
     }
 
@@ -51,7 +44,7 @@ public class IdentityCardNoAnalyzer implements ItemAnalyzer {
         }
     }
 
-    private void fillGender(IdentityCardNoInfo info, String gender) {
+    private void fillGender(HkMoResidentsResidencePermitNoInfo info, String gender) {
         int intGender = Integer.parseInt(gender);
         if (intGender % 2 == 0) {
             info.setGender("女");
@@ -60,7 +53,7 @@ public class IdentityCardNoAnalyzer implements ItemAnalyzer {
         }
     }
 
-    private void fillDateOfBirth(IdentityCardNoInfo info, String strDateOfBirth) {
+    private void fillDateOfBirth(HkMoResidentsResidencePermitNoInfo info, String strDateOfBirth) {
         DateFormat df = new SimpleDateFormat("yyyyMMdd");
         df.setLenient(false);
         try {
@@ -71,27 +64,13 @@ public class IdentityCardNoAnalyzer implements ItemAnalyzer {
         info.setDateOfBirth(strDateOfBirth);
     }
 
-    private void fillArea(IdentityCardNoInfo info, String strArea) {
-        if (strArea.equals("710000") || strArea.equals("810000") || strArea.equals("820000")) {
-            throw new IllegalArgumentException("不支持港澳台");
-        }
-        Map<String, String> areas = AreaResource.getChinaAreas();
-        String county = areas.get(strArea);
-        if (county == null) {
+    private void fillArea(HkMoResidentsResidencePermitNoInfo info, String strArea) {
+        if (strArea.equals("810000")) {
+            info.setArea("香港");
+        } else if (strArea.equals("820000")) {
+            info.setArea("澳门");
+        } else {
             throw new IllegalArgumentException("地区错误");
         }
-        info.setCounty(county);
-        String strCity = strArea.substring(0, 4) + "00";
-        String city = areas.get(strCity);
-        if (city == null) {
-            city = "";
-        }
-        info.setCity(city);
-        String strProvince = strArea.substring(0, 2) + "0000";
-        String province = areas.get(strProvince);
-        if (province == null) {
-            province = "";
-        }
-        info.setProvince(province);
     }
 }
