@@ -22,7 +22,7 @@ public abstract class AnalysisInfo {
             try {
                 map.put(field.getName(), field.get(this));
             } catch (Exception ex) {
-
+                throw new IllegalArgumentException("转换错误");
             }
         }
         return map;

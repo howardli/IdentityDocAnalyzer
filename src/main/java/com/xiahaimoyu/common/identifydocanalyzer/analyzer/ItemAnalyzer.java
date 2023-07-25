@@ -8,5 +8,5 @@ import com.xiahaimoyu.common.identifydocanalyzer.info.AnalysisInfo;
  */
 public interface ItemAnalyzer {
 
-    public AnalysisInfo getResult(String itemValue);
+    AnalysisInfo getResult(String itemValue);
 }

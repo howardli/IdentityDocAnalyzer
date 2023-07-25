@@ -19,6 +19,12 @@ public class AnalyzerResult {
         return result;
     }
 
+    public static AnalyzerResult buildError() {
+        AnalyzerResult result = new AnalyzerResult();
+        result.isValid = false;
+        return result;
+    }
+
     public boolean isValid() {
         return isValid;
     }

@@ -3,7 +3,6 @@ package com.xiahaimoyu.common.identifydocanalyzer.analyzer;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Map;
 
 import com.xiahaimoyu.common.identifydocanalyzer.info.AnalysisInfo;
@@ -37,7 +36,7 @@ public class IdentityCardNoAnalyzer implements ItemAnalyzer {
             if (getCheckCode(itemValue.substring(0, 17)) != itemValue.charAt(17)) {
                 throw new IllegalArgumentException("校验位不对");
             }
-        } else if (itemValue.length() == 15) {
+        } else {
             fillDateOfBirth(info, "19" + itemValue.substring(6, 12));
             fillGender(info, itemValue.substring(14, 15));
         }
@@ -53,7 +52,7 @@ public class IdentityCardNoAnalyzer implements ItemAnalyzer {
     }
 
     private void fillGender(IdentityCardNoInfo info, String gender) {
-        int intGender = Integer.valueOf(gender);
+        int intGender = Integer.parseInt(gender);
         if (intGender % 2 == 0) {
             info.setGender("女");
         } else {
@@ -65,7 +64,7 @@ public class IdentityCardNoAnalyzer implements ItemAnalyzer {
         DateFormat df = new SimpleDateFormat("yyyyMMdd");
         df.setLenient(false);
         try {
-            Date date = df.parse(strDateOfBirth);
+            df.parse(strDateOfBirth);
         } catch (ParseException e) {
             throw new IllegalArgumentException("出生日期错误");
         }

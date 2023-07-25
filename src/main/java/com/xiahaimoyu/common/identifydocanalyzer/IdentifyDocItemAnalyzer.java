@@ -24,12 +24,17 @@ public class IdentifyDocItemAnalyzer {
             new TwResidentsMainlandTravelPermitNoAnalyzer());
     }
 
-    public static AnalysisInfo getResult(AnalyzerType type, String itemValue) {
-        ItemAnalyzer itemAnalyzer = analyzers.get(type);
-        if (itemAnalyzer == null) {
-            throw new IllegalArgumentException("不支持校验");
+    public static AnalyzerResult getResult(AnalyzerType type, String itemValue) {
+        try {
+            ItemAnalyzer itemAnalyzer = analyzers.get(type);
+            if (itemAnalyzer == null) {
+                throw new IllegalArgumentException("不支持校验");
+            }
+            AnalysisInfo info = itemAnalyzer.getResult(itemValue);
+            return AnalyzerResult.buildSuccess(info);
+        } catch (Exception ex) {
+            return AnalyzerResult.buildError();
         }
-        return itemAnalyzer.getResult(itemValue);
     }
 
 }
