@@ -1,6 +1,6 @@
 package com.xiahaimoyu.common.identifydocanalyzer.analyzer;
 
-import java.util.Map;
+import com.xiahaimoyu.common.identifydocanalyzer.info.AnalysisInfo;
 
 /**
  * @author howard.li
@@ -8,5 +8,5 @@ import java.util.Map;
  */
 public interface ItemAnalyzer {
 
-    public Map<String, String> getResult(String itemValue);
+    public AnalysisInfo getResult(String itemValue);
 }

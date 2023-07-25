@@ -3,8 +3,11 @@ package com.xiahaimoyu.common.identifydocanalyzer;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.xiahaimoyu.common.identifydocanalyzer.analyzer.HkMoResidentsMainlandTravelPermitNoAnalyzer;
 import com.xiahaimoyu.common.identifydocanalyzer.analyzer.IdentityCardNoAnalyzer;
 import com.xiahaimoyu.common.identifydocanalyzer.analyzer.ItemAnalyzer;
+import com.xiahaimoyu.common.identifydocanalyzer.analyzer.TwResidentsMainlandTravelPermitNoAnalyzer;
+import com.xiahaimoyu.common.identifydocanalyzer.info.AnalysisInfo;
 
 /**
  * @author howard.li
@@ -15,9 +18,13 @@ public class IdentifyDocItemAnalyzer {
 
     static {
         analyzers.put(AnalyzerType.IDENTITY_CARD_NO_ANALYZER, new IdentityCardNoAnalyzer());
+        analyzers.put(AnalyzerType.HK_MO_RESIDENTS_MAINLAND_TRAVEL_PERMIT_NO_ANALYZER,
+            new HkMoResidentsMainlandTravelPermitNoAnalyzer());
+        analyzers.put(AnalyzerType.TW_RESIDENTS_MAINLAND_TRAVEL_PERMIT_NO_ANALYZER,
+            new TwResidentsMainlandTravelPermitNoAnalyzer());
     }
 
-    public static Map<String, String> getResult(AnalyzerType type, String itemValue) {
+    public static AnalysisInfo getResult(AnalyzerType type, String itemValue) {
         ItemAnalyzer itemAnalyzer = analyzers.get(type);
         if (itemAnalyzer == null) {
             throw new IllegalArgumentException("不支持校验");

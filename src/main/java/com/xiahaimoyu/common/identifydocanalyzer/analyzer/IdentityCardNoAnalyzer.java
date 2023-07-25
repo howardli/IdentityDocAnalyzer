@@ -1,13 +1,13 @@
 package com.xiahaimoyu.common.identifydocanalyzer.analyzer;
 
-import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
+import com.xiahaimoyu.common.identifydocanalyzer.info.AnalysisInfo;
+import com.xiahaimoyu.common.identifydocanalyzer.info.IdentityCardNoInfo;
 import com.xiahaimoyu.common.identifydocanalyzer.resource.AreaResource;
 
 /**
@@ -21,81 +21,15 @@ public class IdentityCardNoAnalyzer implements ItemAnalyzer {
     // 身份证校验码，余数与对应校验码的映射表
     private static final char[] CHECK_CODE_DICT = {'1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'};
 
-    private class Info {
-
-        private String province;
-
-        private String city;
-
-        private String county;
-        private String dateOfBirth;
-
-        private String gender;
-
-        public String getProvince() {
-            return province;
-        }
-
-        public void setProvince(String province) {
-            this.province = province;
-        }
-
-        public String getCity() {
-            return city;
-        }
-
-        public void setCity(String city) {
-            this.city = city;
-        }
-
-        public String getCounty() {
-            return county;
-        }
-
-        public void setCounty(String county) {
-            this.county = county;
-        }
-
-        public String getDateOfBirth() {
-            return dateOfBirth;
-        }
-
-        public void setDateOfBirth(String dateOfBirth) {
-            this.dateOfBirth = dateOfBirth;
-        }
-
-        public String getGender() {
-            return gender;
-        }
-
-        public void setGender(String gender) {
-            this.gender = gender;
-        }
-
-        public Map<String, String> toMap() {
-            Map<String, String> map = new HashMap<>();
-            for (Field field : this.getClass().getDeclaredFields()) {
-                field.setAccessible(true);
-                try {
-                    map.put(field.getName(), (String)field.get(this));
-                } catch (Exception ex) {
-
-                }
-            }
-            return map;
-        }
-
-    }
-
     @Override
-    public Map<String, String> getResult(String itemValue) {
+    public AnalysisInfo getResult(String itemValue) {
         if (itemValue == null) {
             throw new IllegalArgumentException("号码为空");
         }
         if (itemValue.length() != 18 && itemValue.length() != 15) {
             throw new IllegalArgumentException("号码长度不对");
         }
-        Info info = new Info();
+        IdentityCardNoInfo info = new IdentityCardNoInfo();
         fillArea(info, itemValue.substring(0, 6));
         if (itemValue.length() == 18) {
             fillDateOfBirth(info, itemValue.substring(6, 14));
@@ -107,7 +41,7 @@ public class IdentityCardNoAnalyzer implements ItemAnalyzer {
             fillDateOfBirth(info, "19" + itemValue.substring(6, 12));
             fillGender(info, itemValue.substring(14, 15));
         }
-        return info.toMap();
+        return info;
     }
 
     public static char getCheckCode(String id17) {
@@ -118,7 +52,7 @@ public class IdentityCardNoAnalyzer implements ItemAnalyzer {
         return CHECK_CODE_DICT[sum % 11];
     }
 
-    private void fillGender(Info info, String gender) {
+    private void fillGender(IdentityCardNoInfo info, String gender) {
         int intGender = Integer.valueOf(gender);
         if (intGender % 2 == 0) {
             info.setGender("女");
@@ -127,7 +61,7 @@ public class IdentityCardNoAnalyzer implements ItemAnalyzer {
         }
     }
 
-    private void fillDateOfBirth(Info info, String strDateOfBirth) {
+    private void fillDateOfBirth(IdentityCardNoInfo info, String strDateOfBirth) {
         DateFormat df = new SimpleDateFormat("yyyyMMdd");
         df.setLenient(false);
         try {
@@ -138,7 +72,7 @@ public class IdentityCardNoAnalyzer implements ItemAnalyzer {
         info.setDateOfBirth(strDateOfBirth);
     }
 
-    private void fillArea(Info info, String strArea) {
+    private void fillArea(IdentityCardNoInfo info, String strArea) {
         if (strArea.equals("710000") || strArea.equals("810000") || strArea.equals("820000")) {
             throw new IllegalArgumentException("不支持港澳台");
         }

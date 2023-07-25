@@ -1,7 +1,6 @@
 package com.xiahaimoyu.common.identifydocanalyzer;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.xiahaimoyu.common.identifydocanalyzer.info.AnalysisInfo;
 
 /**
  * @author howard.li
@@ -11,21 +10,17 @@ public class AnalyzerResult {
 
     private boolean isValid;
 
-    private Map<String, String> value = new HashMap<>();
+    private AnalysisInfo info;
 
-    public static AnalyzerResult buildSuccess(Map<String, String> value) {
+    public static AnalyzerResult buildSuccess(AnalysisInfo info) {
         AnalyzerResult result = new AnalyzerResult();
         result.isValid = true;
-        result.value = value;
+        result.info = info;
         return result;
     }
 
     public boolean isValid() {
         return isValid;
-    }
-
-    public Map<String, String> getValue() {
-        return value;
     }
 
 }
