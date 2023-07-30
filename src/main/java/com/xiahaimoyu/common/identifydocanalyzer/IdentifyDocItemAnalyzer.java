@@ -23,6 +23,7 @@ public class IdentifyDocItemAnalyzer {
             new HkMoResidentsResidencePermitNoAnalyzer());
         analyzers.put(AnalyzerType.TW_RESIDENTS_RESIDENCE_PERMIT_NO_ANALYZER,
             new TwResidentsResidencePermitNoAnalyzer());
+        analyzers.put(AnalyzerType.PASSPORT_MRZ_FIRST_ROW_ANALYZER, new PassportMrzFirstRowAnalyzer());
     }
 
     public static AnalyzerResult getResult(AnalyzerType type, String itemValue) {

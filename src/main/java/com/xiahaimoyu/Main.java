@@ -19,5 +19,8 @@ public class Main {
             .getResult(AnalyzerType.HK_MO_RESIDENTS_RESIDENCE_PERMIT_NO_ANALYZER, "810000197810272327").getInfo());
         System.out.println(IdentifyDocItemAnalyzer
             .getResult(AnalyzerType.TW_RESIDENTS_RESIDENCE_PERMIT_NO_ANALYZER, "830000197810272320").getInfo());
+        System.out.println(IdentifyDocItemAnalyzer
+            .getResult(AnalyzerType.PASSPORT_MRZ_FIRST_ROW_ANALYZER, "P>CHNLI>>HAO>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+            .getInfo());
     }
 }

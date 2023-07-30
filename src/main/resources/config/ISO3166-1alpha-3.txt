@@ -18,7 +18,7 @@ AZE 阿塞拜疆
 BDI 布隆迪
 BEL 比利时
 BEN 贝宁
-BES 博奈尔岛, 圣尤斯特歇斯岛和萨巴岛
+BES 博奈尔岛,圣尤斯特歇斯岛和萨巴岛
 BFA 布基纳法索
 BGD 孟加拉国
 BGR 保加利亚
@@ -243,7 +243,6 @@ VNM 越南
 VUT 瓦努阿图
 WLF 瓦利斯和富图纳
 WSM 萨摩亚
-XKX 科索沃
 YEM 也门
 ZAF 南非
 ZMB 赞比亚
