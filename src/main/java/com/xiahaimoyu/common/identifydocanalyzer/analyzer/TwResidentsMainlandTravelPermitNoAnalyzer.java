@@ -13,25 +13,30 @@ public class TwResidentsMainlandTravelPermitNoAnalyzer implements ItemAnalyzer {
         if (itemValue == null) {
             throw new IllegalArgumentException("号码为空");
         }
-        if (itemValue.length() != 10 && itemValue.length() != 8) {
+        int len = itemValue.length();
+        if (len != 10 && len != 8) {
             throw new IllegalArgumentException("号码长度不对");
         }
         TwResidentsMainlandTravelPermitNoInfo info = new TwResidentsMainlandTravelPermitNoInfo();
-        checkLifetimeNo(itemValue.substring(0, 8));
+        char[] chars = itemValue.toCharArray();
+        checkLifetimeNo(chars);
         info.setCertificateRenewals(-1);
-        if (itemValue.length() == 10) {
-            fillCertificateRenewals(info, itemValue.substring(8, 10));
+        if (len == 10) {
+            fillCertificateRenewals(info, chars);
         }
         return info;
     }
 
-    private void fillCertificateRenewals(TwResidentsMainlandTravelPermitNoInfo info, String certificateRenewals) {
-        info.setCertificateRenewals(Integer.parseInt(certificateRenewals));
+    private void fillCertificateRenewals(TwResidentsMainlandTravelPermitNoInfo info, char[] chars) {
+        if (!Character.isDigit(chars[8]) || !Character.isDigit(chars[9])) {
+            throw new IllegalArgumentException("换证次数错误");
+        }
+        info.setCertificateRenewals((chars[8] - '0') * 10 + (chars[9] - '0'));
     }
 
-    private void checkLifetimeNo(String lifetimeNo) {
-        for (char c : lifetimeNo.toCharArray()) {
-            if (!Character.isDigit(c)) {
+    private void checkLifetimeNo(char[] chars) {
+        for (int i = 0; i < 8; i++) {
+            if (!Character.isDigit(chars[i])) {
                 throw new IllegalArgumentException("号码非法");
             }
         }

@@ -13,35 +13,40 @@ public class HkMoResidentsMainlandTravelPermitNoAnalyzer implements ItemAnalyzer
         if (itemValue == null) {
             throw new IllegalArgumentException("号码为空");
         }
-        if (itemValue.length() != 11 && itemValue.length() != 9) {
+        int len = itemValue.length();
+        if (len != 11 && len != 9) {
             throw new IllegalArgumentException("号码长度不对");
         }
         HkMoResidentsMainlandTravelPermitNoInfo info = new HkMoResidentsMainlandTravelPermitNoInfo();
-        fillArea(info, itemValue.substring(0, 1));
-        checkLifetimeNo(itemValue.substring(1, 9));
+        char[] chars = itemValue.toCharArray();
+        fillArea(info, chars[0]);
+        checkLifetimeNo(chars);
         info.setCertificateRenewals(-1);
-        if (itemValue.length() == 11) {
-            fillCertificateRenewals(info, itemValue.substring(9, 11));
+        if (len == 11) {
+            fillCertificateRenewals(info, chars);
         }
         return info;
     }
 
-    private void fillCertificateRenewals(HkMoResidentsMainlandTravelPermitNoInfo info, String certificateRenewals) {
-        info.setCertificateRenewals(Integer.parseInt(certificateRenewals));
+    private void fillCertificateRenewals(HkMoResidentsMainlandTravelPermitNoInfo info, char[] chars) {
+        if (!Character.isDigit(chars[9]) || !Character.isDigit(chars[10])) {
+            throw new IllegalArgumentException("换证次数错误");
+        }
+        info.setCertificateRenewals((chars[9] - '0') * 10 + (chars[10] - '0'));
     }
 
-    private void checkLifetimeNo(String lifetimeNo) {
-        for (char c : lifetimeNo.toCharArray()) {
-            if (!Character.isDigit(c)) {
+    private void checkLifetimeNo(char[] chars) {
+        for (int i = 1; i < 9; i++) {
+            if (!Character.isDigit(chars[i])) {
                 throw new IllegalArgumentException("号码非法");
             }
         }
     }
 
-    private void fillArea(HkMoResidentsMainlandTravelPermitNoInfo info, String area) {
-        if (area.equals("H")) {
+    private void fillArea(HkMoResidentsMainlandTravelPermitNoInfo info, char area) {
+        if (area == 'H') {
             info.setArea("香港");
-        } else if (area.equals("M")) {
+        } else if (area == 'M') {
             info.setArea("澳门");
         } else {
             throw new IllegalArgumentException("证件非法");

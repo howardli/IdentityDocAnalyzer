@@ -14,7 +14,8 @@ public class PassportMrzFirstRowAnalyzer implements ItemAnalyzer {
         if (itemValue == null) {
             throw new IllegalArgumentException("号码为空");
         }
-        if (itemValue.length() != 44) {
+        int len = itemValue.length();
+        if (len != 44) {
             throw new IllegalArgumentException("号码长度不对");
         }
         PassportMrzFirstRowInfo info = new PassportMrzFirstRowInfo();
@@ -30,38 +31,38 @@ public class PassportMrzFirstRowAnalyzer implements ItemAnalyzer {
         return info;
     }
 
-    private void fillName(PassportMrzFirstRowInfo info, char[] array) {
+    private void fillName(PassportMrzFirstRowInfo info, char[] chars) {
         StringBuffer partName = new StringBuffer();
         String surname = "";
         String givenName = "";
         int endIndex = 43;
         for (int i = 43; i >= 5; i--) {
-            if (array[i] != '>') {
+            if (chars[i] != '>') {
                 endIndex = i;
                 break;
             }
         }
         int mid = endIndex;
         for (int i = 5; i <= endIndex; i++) {
-            if (i <= endIndex - 1 && array[i] == '>' && array[i + 1] == '>') {
+            if (i <= endIndex - 1 && chars[i] == '>' && chars[i + 1] == '>') {
                 if (mid != endIndex) {
                     throw new IllegalArgumentException("格式有问题");
                 }
-                mid = i - 1;
+                mid = i;
             }
         }
-        info.setSurname(parseName(array, 5, mid));
-        info.setGivenName(parseName(array, mid + 3, endIndex));
+        info.setSurname(parseName(chars, 5, mid - 1));
+        info.setGivenName(parseName(chars, mid + 2, endIndex));
     }
 
-    private String parseName(char[] array, int start, int end) {
+    private String parseName(char[] chars, int start, int end) {
         if (start > end) {
-            throw new IllegalArgumentException("格式有问题");
+            return null;
         }
         StringBuffer partName = new StringBuffer();
         for (int i = start; i <= end; i++) {
-            if (array[i] != '>') {
-                partName.append(array[i]);
+            if (chars[i] != '>') {
+                partName.append(chars[i]);
             } else {
                 partName.append(" ");
             }
