@@ -12,6 +12,8 @@ public class AnalyzerResult {
 
     private AnalysisInfo info;
 
+    private String errorCode;
+
     public static AnalyzerResult buildSuccess(AnalysisInfo info) {
         AnalyzerResult result = new AnalyzerResult();
         result.isValid = true;
@@ -19,9 +21,10 @@ public class AnalyzerResult {
         return result;
     }
 
-    public static AnalyzerResult buildError() {
+    public static AnalyzerResult buildError(String errorCode) {
         AnalyzerResult result = new AnalyzerResult();
         result.isValid = false;
+        result.errorCode = errorCode;
         return result;
     }
 

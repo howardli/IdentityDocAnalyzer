@@ -35,7 +35,7 @@ public class IdentifyDocItemAnalyzer {
             AnalysisInfo info = itemAnalyzer.getResult(itemValue);
             return AnalyzerResult.buildSuccess(info);
         } catch (Exception ex) {
-            return AnalyzerResult.buildError();
+            return AnalyzerResult.buildError(ex.getMessage());
         }
     }
 

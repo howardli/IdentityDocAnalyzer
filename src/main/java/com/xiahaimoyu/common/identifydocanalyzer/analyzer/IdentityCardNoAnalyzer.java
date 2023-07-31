@@ -25,35 +25,39 @@ public class IdentityCardNoAnalyzer implements ItemAnalyzer {
         if (itemValue == null) {
             throw new IllegalArgumentException("号码为空");
         }
-        if (itemValue.length() != 18 && itemValue.length() != 15) {
+        int len = itemValue.length();
+        if (len != 18 && len != 15) {
             throw new IllegalArgumentException("号码长度不对");
         }
         IdentityCardNoInfo info = new IdentityCardNoInfo();
-        fillArea(info, itemValue.substring(0, 6));
-        if (itemValue.length() == 18) {
-            fillDateOfBirth(info, itemValue.substring(6, 14));
-            fillGender(info, itemValue.substring(16, 17));
-            checkDigit(itemValue.substring(0, 17), itemValue.charAt(17));
+        char[] chars = itemValue.toCharArray();
+        fillArea(info, chars);
+        if (len == 18) {
+            fillDateOfBirth(info, String.valueOf(chars, 6, 8));
+            fillGender(info, chars[16]);
+            checkDigit(chars);
         } else {
-            fillDateOfBirth(info, "19" + itemValue.substring(6, 12));
-            fillGender(info, itemValue.substring(14, 15));
+            fillDateOfBirth(info, "19" + String.valueOf(chars, 6, 6));
+            fillGender(info, chars[14]);
         }
         return info;
     }
 
-    public void checkDigit(String no17, char no18) {
+    public void checkDigit(char[] chars) {
         int sum = 0;
-        for (int i = 0; i < no17.length(); i++) {
-            sum += (no17.charAt(i) - '0') * COEFFICIENT_ARRAY[i];
+        for (int i = 0; i < 17; i++) {
+            sum += (chars[i] - '0') * COEFFICIENT_ARRAY[i];
         }
-        if (CHECK_CODE_DICT[sum % 11] != no18) {
+        if (CHECK_CODE_DICT[sum % 11] != chars[17]) {
             throw new IllegalArgumentException("校验位不对");
         }
     }
 
-    private void fillGender(IdentityCardNoInfo info, String gender) {
-        int intGender = Integer.parseInt(gender);
-        if (intGender % 2 == 0) {
+    private void fillGender(IdentityCardNoInfo info, char gender) {
+        if (!Character.isDigit(gender)) {
+            throw new IllegalArgumentException("性别错误");
+        }
+        if ((gender - '0') % 2 == 0) {
             info.setGender("女");
         } else {
             info.setGender("男");
@@ -71,27 +75,23 @@ public class IdentityCardNoAnalyzer implements ItemAnalyzer {
         info.setDateOfBirth(strDateOfBirth);
     }
 
-    private void fillArea(IdentityCardNoInfo info, String strArea) {
-        if (strArea.equals("710000") || strArea.equals("810000") || strArea.equals("820000")) {
+    private void fillArea(IdentityCardNoInfo info, char[] chars) {
+        char[] area = new char[6];
+        System.arraycopy(chars, 0, area, 0, 6);
+        if (area[4] == '0' && area[5] == '0') {
             throw new IllegalArgumentException("不支持港澳台");
         }
         Map<String, String> areas = AreaResource.getChinaAreas();
-        String county = areas.get(strArea);
+        String county = areas.get(String.valueOf(area));
         if (county == null) {
             throw new IllegalArgumentException("地区错误");
         }
         info.setCounty(county);
-        String strCity = strArea.substring(0, 4) + "00";
-        String city = areas.get(strCity);
-        if (city == null) {
-            city = "";
-        }
-        info.setCity(city);
-        String strProvince = strArea.substring(0, 2) + "0000";
-        String province = areas.get(strProvince);
-        if (province == null) {
-            province = "";
-        }
-        info.setProvince(province);
+        area[4] = '0';
+        area[5] = '0';
+        info.setCity(areas.get(String.valueOf(area)));
+        area[2] = '0';
+        area[3] = '0';
+        info.setProvince(areas.get(String.valueOf(area)));
     }
 }
