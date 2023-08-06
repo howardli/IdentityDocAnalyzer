@@ -43,7 +43,7 @@ public class IdentityCardNoAnalyzer implements ItemAnalyzer {
         return info;
     }
 
-    public void checkDigit(char[] chars) {
+    private void checkDigit(char[] chars) {
         int sum = 0;
         for (int i = 0; i < 17; i++) {
             sum += (chars[i] - '0') * COEFFICIENT_ARRAY[i];
