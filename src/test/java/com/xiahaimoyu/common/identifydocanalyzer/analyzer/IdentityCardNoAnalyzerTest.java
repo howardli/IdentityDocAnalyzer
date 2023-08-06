@@ -13,7 +13,7 @@ import com.xiahaimoyu.common.identifydocanalyzer.info.IdentityCardNoInfo;
  */
 class IdentityCardNoAnalyzerTest {
 
-    private final IdentityCardNoAnalyzer analyzer = new IdentityCardNoAnalyzer();
+    private static final IdentityCardNoAnalyzer analyzer = new IdentityCardNoAnalyzer();
 
     @Test
     void getResult() {

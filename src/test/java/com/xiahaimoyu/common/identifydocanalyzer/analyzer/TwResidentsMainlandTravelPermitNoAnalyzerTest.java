@@ -12,7 +12,8 @@ import com.xiahaimoyu.common.identifydocanalyzer.info.TwResidentsMainlandTravelP
  */
 class TwResidentsMainlandTravelPermitNoAnalyzerTest {
 
-    private static TwResidentsMainlandTravelPermitNoAnalyzer analyzer = new TwResidentsMainlandTravelPermitNoAnalyzer();
+    private static final TwResidentsMainlandTravelPermitNoAnalyzer analyzer =
+        new TwResidentsMainlandTravelPermitNoAnalyzer();
 
     @Test
     void getResult() {

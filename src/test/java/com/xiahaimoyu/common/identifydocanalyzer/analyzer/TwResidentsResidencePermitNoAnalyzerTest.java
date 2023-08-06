@@ -12,7 +12,7 @@ import com.xiahaimoyu.common.identifydocanalyzer.info.TwResidentsResidencePermit
  */
 class TwResidentsResidencePermitNoAnalyzerTest {
 
-    private static TwResidentsResidencePermitNoAnalyzer analyzer = new TwResidentsResidencePermitNoAnalyzer();
+    private static final TwResidentsResidencePermitNoAnalyzer analyzer = new TwResidentsResidencePermitNoAnalyzer();
 
     @Test
     void getResult() {

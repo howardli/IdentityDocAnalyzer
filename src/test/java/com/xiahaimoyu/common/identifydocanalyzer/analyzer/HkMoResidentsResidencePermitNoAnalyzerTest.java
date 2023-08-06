@@ -12,7 +12,7 @@ import com.xiahaimoyu.common.identifydocanalyzer.info.HkMoResidentsResidencePerm
  */
 class HkMoResidentsResidencePermitNoAnalyzerTest {
 
-    private static HkMoResidentsResidencePermitNoAnalyzer analyzer = new HkMoResidentsResidencePermitNoAnalyzer();
+    private static final HkMoResidentsResidencePermitNoAnalyzer analyzer = new HkMoResidentsResidencePermitNoAnalyzer();
 
     @Test
     void getResult() {

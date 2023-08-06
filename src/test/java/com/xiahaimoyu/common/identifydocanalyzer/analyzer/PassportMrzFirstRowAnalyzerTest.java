@@ -12,7 +12,7 @@ import com.xiahaimoyu.common.identifydocanalyzer.info.PassportMrzFirstRowInfo;
  */
 class PassportMrzFirstRowAnalyzerTest {
 
-    private static PassportMrzFirstRowAnalyzer analyzer = new PassportMrzFirstRowAnalyzer();
+    private static final PassportMrzFirstRowAnalyzer analyzer = new PassportMrzFirstRowAnalyzer();
 
     @Test
     void getResult() {

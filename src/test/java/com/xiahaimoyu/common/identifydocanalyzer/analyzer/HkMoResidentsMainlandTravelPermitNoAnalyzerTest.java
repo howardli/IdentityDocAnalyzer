@@ -12,7 +12,7 @@ import com.xiahaimoyu.common.identifydocanalyzer.info.HkMoResidentsMainlandTrave
  */
 class HkMoResidentsMainlandTravelPermitNoAnalyzerTest {
 
-    private static HkMoResidentsMainlandTravelPermitNoAnalyzer analyzer =
+    private static final HkMoResidentsMainlandTravelPermitNoAnalyzer analyzer =
         new HkMoResidentsMainlandTravelPermitNoAnalyzer();
 
     @Test
