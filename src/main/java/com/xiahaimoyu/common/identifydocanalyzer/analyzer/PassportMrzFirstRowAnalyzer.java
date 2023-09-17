@@ -71,7 +71,7 @@ public class PassportMrzFirstRowAnalyzer implements ItemAnalyzer {
     }
 
     private void fillIssuingCountryRegionOrg(PassportMrzFirstRowInfo info, char[] chars) {
-        String countryRegionOrg = AreaResource.getCountryRegionOrgAlpha3().get(String.valueOf(chars, 2, 3));
+        String countryRegionOrg = AreaResource.getCountryRegionAlpha3().get(String.valueOf(chars, 2, 3));
         if (countryRegionOrg == null) {
             throw new IllegalArgumentException("不存在");
         }

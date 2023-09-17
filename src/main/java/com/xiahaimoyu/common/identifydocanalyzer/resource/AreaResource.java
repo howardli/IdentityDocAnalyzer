@@ -13,7 +13,7 @@ public class AreaResource {
 
     private static final Map<String, String> chinaAreas = new HashMap<>();
 
-    private static final Map<String, String> countryRegionOrgAlpha3 = new HashMap<>();
+    private static final Map<String, String> countryRegionAlpha3 = new HashMap<>();
 
     static {
         loadChinaAreas();
@@ -27,7 +27,7 @@ public class AreaResource {
             String str;
             while ((str = in.readLine()) != null) {
                 String[] strArray = str.split(" ");
-                countryRegionOrgAlpha3.put(strArray[0].trim(), strArray[1].trim());
+                countryRegionAlpha3.put(strArray[0].trim(), strArray[1].trim());
             }
         } catch (Exception ex) {
             System.out.println(ex);
@@ -52,7 +52,7 @@ public class AreaResource {
         return chinaAreas;
     }
 
-    public static Map<String, String> getCountryRegionOrgAlpha3() {
-        return countryRegionOrgAlpha3;
+    public static Map<String, String> getCountryRegionAlpha3() {
+        return countryRegionAlpha3;
     }
 }
